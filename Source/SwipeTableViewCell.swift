@@ -243,16 +243,18 @@ open class SwipeTableViewCell: UITableViewCell {
         
         addSubview(actionsView)
 
-        actionsView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        actionsView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 2).isActive = true
-        actionsView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        
-        if orientation == .left {
-            actionsView.rightAnchor.constraint(equalTo: leftAnchor).isActive = true
+        if #available(iOS 9.0, *) {
+            actionsView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+            actionsView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 2).isActive = true
+            actionsView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            orientation == .left ? (actionsView.rightAnchor.constraint(equalTo: leftAnchor).isActive = true) : (actionsView.leftAnchor.constraint(equalTo: rightAnchor).isActive = true)
         } else {
-            actionsView.leftAnchor.constraint(equalTo: rightAnchor).isActive = true
+            actionsView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint(item: actionsView, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 1.0, constant: 0).isActive = true
+            NSLayoutConstraint(item: actionsView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 2.0, constant: 0).isActive = true
+            
+            orientation == .left ? (NSLayoutConstraint(item: actionsView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0).isActive = true) : (NSLayoutConstraint(item: actionsView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true)
         }
-		
 		actionsView.setNeedsUpdateConstraints()
 		
 		self.actionsView = actionsView
