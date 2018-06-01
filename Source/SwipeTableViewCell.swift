@@ -503,7 +503,8 @@ extension SwipeTableViewCell {
             let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer
         {
             let translation = gestureRecognizer.translation(in: view)
-            return abs(translation.y) <= abs(translation.x)
+            
+            return abs(translation.y) <= abs(translation.x) && translation.x < 0
         }
 
         return true
